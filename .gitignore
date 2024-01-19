@@ -7,3 +7,4 @@
 Test.md
 .github/workflows/dev.yaml
 *.secrets
+.idea
