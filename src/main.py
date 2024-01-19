@@ -22,6 +22,12 @@ for key in ['from', 'to', 'cloud', 'user', 'token']:
         exit(1)
     envs[key] = value
 
+value = environ.get(f'INPUT_{"content_prefix".upper()}')
+if value:
+    envs['content_prefix'] = value
+else:
+    envs['content_prefix'] = ""
+
 with open(join(workspace, envs['from'])) as f:
     md = f.read()
 
@@ -30,6 +36,7 @@ url = f"https://{envs['cloud']}.atlassian.net/wiki/rest/api/content/{envs['to']}
 current = requests.get(url, auth=(envs['user'], envs['token'])).json()
 
 html = markdown(md, extensions=[GithubFlavoredMarkdownExtension()])
+html = envs['content_prefix'] + html
 content = {
     'id': current['id'],
     'type': current['type'],

@@ -20,6 +20,9 @@ inputs:
   token:
     description: Token for the user
     required: true
+  content_prefix:
+    description: Prefix for the content pushed to confluence
+    required: false
 runs:
   using: docker
   image: Dockerfile
