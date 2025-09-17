@@ -31,7 +31,13 @@ else:
 with open(join(workspace, envs['from'])) as f:
     md = f.read()
 
-url = f"https://{envs['cloud']}.atlassian.net/wiki/rest/api/content/{envs['to']}"
+base_url = envs['cloud']
+if '://' in base_url:  # It's a full URL
+    # Remove trailing slash if present
+    base_url = base_url.rstrip('/')
+    url = f"{base_url}/wiki/rest/api/content/{envs['to']}"
+else:  # It's a subdomain
+    url = f"https://{base_url}.atlassian.net/wiki/rest/api/content/{envs['to']}"
 
 current = requests.get(url, auth=(envs['user'], envs['token'])).json()
 
