@@ -39,7 +39,9 @@ if '://' in base_url:  # It's a full URL
 else:  # It's a subdomain
     url = f"https://{base_url}.atlassian.net/wiki/rest/api/content/{envs['to']}"
 
-current = requests.get(url, auth=(envs['user'], envs['token'])).raise_for_status().json()
+response = requests.get(url, auth=(envs['user'], envs['token']))
+response.raise_for_status()
+current = response.json()
 
 html = markdown(md, extensions=[GithubFlavoredMarkdownExtension()])
 html = envs['content_prefix'] + html
